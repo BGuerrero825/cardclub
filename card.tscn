@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://fjbj1b16d37h"]
+
+[ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://assets/Cards.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://card.gd" id="1_rjlel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kikvd"]
+size = Vector2(62, 86)
+
+[node name="Card" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_rjlel")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_kikvd")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_kikvd")
