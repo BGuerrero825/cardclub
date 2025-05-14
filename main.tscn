@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkyiahr4xu1kj"]
+[gd_scene load_steps=9 format=3 uid="uid://dkyiahr4xu1kj"]
 
 [ext_resource type="Script" uid="uid://h3gjb7u1pnh1" path="res://thumb.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://cpirdksltlf01" path="res://hand.png" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://fjbj1b16d37h" path="res://card.tscn" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://ddj30pdl8qrm7" path="res://assets/table.png" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://yoc56goo3buy" path="res://assets/Deck_guide.png" id="5_lquwl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xm2m"]
 radius = 8.0
@@ -73,9 +74,16 @@ region_rect = Rect2(0, 0, 1400, 800)
 
 [node name="Card" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(257, 271.398)
+type = "as"
 
 [node name="Card2" parent="." instance=ExtResource("3_h2yge")]
-position = Vector2(581, 219.943)
+position = Vector2(537, 387)
+type = "kh"
 
 [node name="Card3" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(833, 432.825)
+type = "7d"
+
+[node name="DeckGuide" type="Sprite2D" parent="."]
+position = Vector2(905, 139)
+texture = ExtResource("5_lquwl")
