@@ -13,7 +13,7 @@ func _process(_delta: float) -> void:
 			item.pickup(self)
 
 	if Input.is_action_just_released('lmb') and holding:
-		print("holding: ", holding)
+		print("dropping: ", holding)
 		holding.drop()
 		holding = null
 

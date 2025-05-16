@@ -2,62 +2,87 @@ extends CharacterBody2D
 
 @export var type := 'jo'
 
+const vz = Vector2.ZERO 
 var magnetism := 15.0
-var angular_velocity := 0.
-var angular_velocity_ratio := .001
+var rotation_magnetism := .2 
+var angular_velocity := .0
+var angular_velocity_ratio := .002
 var friction := .15
+var flip_step = .2
 
 var holder: Node2D = null
 var up := false
-var flipping := 0
-var flip_speed = .15
+var flip_dir := 0
+var height_dir := 0
 
 @onready var up_frame := frame_from_type()
 @onready var animation := $Animation
 @onready var sprite := $Animation/Sprite2D 
+@onready var shadow := $Animation/Shadow
 
 func _physics_process(delta: float) -> void:
 	if holder:
-		velocity = lerp(Vector2.ZERO, holder.position - self.position, magnetism)
-		rotation = lerp(rotation, 0., .5)
+		magnetize_to_hand()
 	else: 
-		velocity = lerp(velocity, Vector2.ZERO, friction)
-		if velocity.length() < 1:
-			velocity = Vector2.ZERO
-		if not velocity.is_zero_approx():
-			print("velocity: ", velocity) 
-			rotation += angular_velocity * delta
-			angular_velocity = lerp(angular_velocity, 0., friction)
-	if flipping == -1:
-		animation.scale.x = move_toward(animation.scale.x, 0., flip_speed)
-		print("scale: ", animation.scale.x)
-		if animation.scale.x < flip_speed:
-			print("hit zero")
-			flip_frame()
-			flipping = 1
-	if flipping == 1:
-		animation.scale.x = move_toward(animation.scale.x, 1., flip_speed)
-		if animation.scale.x > 1. - flip_speed:
-			animation.scale.x = 1 
-			flipping = 0
-		
+		slide_on_table()
+		rotate(angular_velocity * delta)
 
-	self.move_and_slide()
+	if flip_dir:
+		animate_flip()
+	
+	if height_dir:
+		animate_height()
+	
+	move_and_slide()
 		
+func magnetize_to_hand():
+	velocity = lerp(vz, holder.position - self.position, magnetism)
+	rotation = lerp(rotation, 0., rotation_magnetism)
+
+func slide_on_table():
+	velocity = lerp(velocity, vz, friction)
+	angular_velocity = lerp(angular_velocity, 0., friction)
+	if velocity.length() < 1:
+		velocity = vz
+
+func animate_flip():
+	if flip_dir == -1:
+		animation.scale.x = move_toward(animation.scale.x, 0., flip_step)
+		if animation.scale.x < flip_step:
+			flip_frame()
+			flip_dir = 1
+	if flip_dir == 1:
+		animation.scale.x = move_toward(animation.scale.x, 1., flip_step)
+		if animation.scale.x > 1. - flip_step:
+			animation.scale.x = 1 
+			flip_dir = 0
+
+func animate_height():
+	if height_dir == -1:
+		sprite.position.y -= 4.
+		if sprite.position.y < -20:
+			sprite.position.y = -20
+			height_dir = 0
+	if height_dir == 1:
+		sprite.position.y += 4.
+		if sprite.position.y > 0:
+			sprite.position.y = 0
+			height_dir = 0
+
 func pickup(new_holder: Object):
-	velocity = Vector2.ZERO
+	velocity = vz
 	holder = new_holder
 	move_to_front()
+	height_dir = -1
 
 func drop():
 	holder = null
-	angular_velocity = velocity.length() * angular_velocity_ratio;
-	if velocity.x < 0:
-		angular_velocity *= -1
+	angular_velocity = velocity.x * angular_velocity_ratio
+	height_dir = 1
 
 func flip():
-	if flipping == 0:
-		flipping = -1
+	if flip_dir == 0:
+		flip_dir = -1
 
 func flip_frame():
 	if up:
@@ -66,8 +91,6 @@ func flip_frame():
 	else:
 		sprite.frame = up_frame
 		up = true
-
-
 
 func frame_from_type() -> int:
 	var sprite_frame = 0
@@ -101,6 +124,7 @@ func frame_from_type() -> int:
 			return 52 # joker
 
 	return sprite_frame
+
 
 # signals callbacks
 func _on_rigid_body_2d_mouse_entered() -> void:
