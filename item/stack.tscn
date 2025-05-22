@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://c60yi8nl0caxq"]
+
+[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://item/item.gd" id="1_7c0hu"]
+[ext_resource type="Texture2D" uid="uid://dlnpa6dfmaoff" path="res://item/Deck.png" id="1_hmspu"]
+[ext_resource type="Script" uid="uid://dc8gxv84e45vp" path="res://item/stack.gd" id="2_304e4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7c0hu"]
+size = Vector2(62, 98)
+
+[node name="Stack" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_7c0hu")
+
+[node name="SubItem" type="Node2D" parent="."]
+script = ExtResource("2_304e4")
+
+[node name="Shadow" type="Sprite2D" parent="SubItem"]
+self_modulate = Color(0, 0, 0, 0.298039)
+texture_filter = 1
+position = Vector2(-7, 9)
+scale = Vector2(2.3, 1.85)
+texture = ExtResource("1_hmspu")
+
+[node name="Sprite2D" type="Sprite2D" parent="SubItem"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_hmspu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7c0hu")

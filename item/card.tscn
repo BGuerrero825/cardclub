@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://fjbj1b16d37h"]
+
+[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://item/item.gd" id="1_75kpa"]
+[ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://item/Cards.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://cg246n6g83gu5" path="res://item/card.gd" id="2_75kpa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kikvd"]
+size = Vector2(62, 86)
+
+[node name="Card" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_75kpa")
+
+[node name="SubItem" type="Node2D" parent="."]
+script = ExtResource("2_75kpa")
+
+[node name="Shadow" type="Sprite2D" parent="SubItem"]
+self_modulate = Color(0, 0, 0, 0.298039)
+texture_filter = 1
+scale = Vector2(2.05, 2.03)
+texture = ExtResource("1_kikvd")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Sprite2D" type="Sprite2D" parent="SubItem"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_kikvd")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_kikvd")
