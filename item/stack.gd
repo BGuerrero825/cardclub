@@ -11,8 +11,9 @@ var card_scene = preload("res://item/card.tscn")
 
 @onready var item := get_parent()
 
-func pickup():
+func draw(actor: Node2D) -> Node2D:
 	var card = card_scene.instantiate()
-	card.get_node("SubItem").type = cards.pop_front()
+	card.get_node("Card").type = cards.pop_front()
 	get_parent().get_parent().add_child(card)
-	card.position = get_global_mouse_position()
+	card.transform = self.get_global_transform()
+	return card.handler.interact(actor)

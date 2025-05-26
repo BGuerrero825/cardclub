@@ -75,5 +75,5 @@ region_rect = Rect2(0, 0, 1400, 800)
 [node name="Card" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(449, 358)
 
-[node name="Stack" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(412, 156)
+[node name="Body" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(659, 338)

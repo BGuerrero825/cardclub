@@ -9,16 +9,16 @@ var flip_step = .2
 
 var up := false
 var flip_dir := 0
-var height_dir := 0
 
-@onready var item := self.get_parent()
+@onready var item := $".."
+@onready var anim := $"../Animation"
+@onready var sprite := $"../Animation/Sprite2D"
+@onready var shadow := $"../Animation/Shadow"
 @onready var up_frame := frame_from_type()
-@onready var sprite := $Sprite2D 
-@onready var shadow := $Shadow
 
 
 func _ready() -> void:
-	assert(item is Item)
+	pass
 
 func _physics_process(delta: float) -> void:
 	if item.holder:
@@ -28,17 +28,11 @@ func _physics_process(delta: float) -> void:
 
 	if flip_dir:
 		animate_flip()
-	if height_dir:
-		animate_height()
 
 
 # EXTERNAL #
 
-func pickup():
-	height_dir = -1
-
 func drop():
-	height_dir = 1
 	angular_velocity = item.velocity.x * angular_velocity_ratio
 	
 func flip():
@@ -46,38 +40,25 @@ func flip():
 		flip_dir = -1
 
 
-
 # INTERNAL #
 	
 func rotate_to_hand():
-	rotation = lerp(rotation, 0., rotation_magnetism)
+	anim.rotation = lerp(anim.rotation, 0., rotation_magnetism)
 
 func rotate_on_table(delta):
 	angular_velocity = lerp(angular_velocity, 0., item.friction)
-	rotate(angular_velocity * delta)
-
-func animate_height():
-	if height_dir == -1:
-		sprite.position.y -= 4.
-		if sprite.position.y < -20:
-			sprite.position.y = -20
-			height_dir = 0
-	if height_dir == 1:
-		sprite.position.y += 4.
-		if sprite.position.y > 0:
-			sprite.position.y = 0
-			height_dir = 0
+	anim.rotate(angular_velocity * delta)
 
 func animate_flip():
 	if flip_dir == -1:
-		scale.x = move_toward(scale.x, 0., flip_step)
-		if scale.x < flip_step:
+		anim.scale.x = move_toward(anim.scale.x, 0., flip_step)
+		if anim.scale.x < flip_step:
 			flip_frame()
 			flip_dir = 1
 	if flip_dir == 1:
-		scale.x = move_toward(scale.x, 1., flip_step)
-		if scale.x > 1. - flip_step:
-			scale.x = 1 
+		anim.scale.x = move_toward(anim.scale.x, 1., flip_step)
+		if anim.scale.x > 1. - flip_step:
+			anim.scale.x = 1 
 			flip_dir = 0
 
 func flip_frame():

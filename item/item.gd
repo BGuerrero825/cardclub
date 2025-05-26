@@ -1,44 +1,48 @@
-class_name Item extends CharacterBody2D 
+class_name Item extends Node2D 
 
-const vz = Vector2.ZERO 
-var magnetism := 15.0
-var friction := .15
+var height_dir := 0
+var jumping = false 
 
-var holder: Node2D = null
-
-@onready var subitem := $SubItem 
+@onready var body := $".."
+@onready var sprite := $"../Animation/Sprite2D"
+@onready var shadow := $"../Animation/Shadow"
 
 func _ready() -> void:
-	assert("item" in subitem)
+	pass
 
 func _physics_process(_delta: float) -> void:
-	if holder:
-		magnetize_to_hand()
-	else: 
-		slide_on_table()
+	if height_dir:
+		animate_height()
 
-	move_and_slide()
-		
-func magnetize_to_hand():
-	velocity = lerp(vz, holder.position - self.position, magnetism)
+# EXTERNAL #
 
-func slide_on_table():
-	velocity = lerp(velocity, vz, friction)
-	if velocity.length() < 1:
-		velocity = vz
-
-func pickup(new_holder: Object):
-	if subitem.has_method("pickup"):
-		subitem.pickup()
-	velocity = vz
-	holder = new_holder
-	move_to_front()
+func pickup():
+	height_dir = -1
 
 func drop():
-	if subitem.has_method("drop"):
-		subitem.drop()
-	holder = null
+	height_dir = 1
 
-func flip():
-	if subitem.has_method("flip"):
-		subitem.flip()
+func jump():
+	body.move_to_front()
+	height_dir = -1
+	jumping = true
+	
+
+# INTERNAL #
+
+func animate_height():
+	if height_dir == -1:
+		sprite.position.y -= 4.
+		if sprite.position.y < -20:
+			sprite.position.y = -20
+			height_dir = 0
+			if jumping:
+				height_dir = 1
+
+	if height_dir == 1:
+		sprite.position.y += 4.
+		if sprite.position.y > 0:
+			sprite.position.y = 0
+			height_dir = 0
+			if jumping:
+				jumping = false
