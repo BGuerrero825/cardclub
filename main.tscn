@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkyiahr4xu1kj"]
+[gd_scene load_steps=10 format=3 uid="uid://dkyiahr4xu1kj"]
 
-[ext_resource type="Script" uid="uid://h3gjb7u1pnh1" path="res://thumb/thumb.gd" id="1_1bvp3"]
-[ext_resource type="Texture2D" uid="uid://cpirdksltlf01" path="res://thumb/thumb.png" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cwu4m258tr1w7" path="res://thumb/thumb.gd" id="1_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://dm4pixil5ij71" path="res://thumb/thumb.png" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://fjbj1b16d37h" path="res://item/card.tscn" id="3_h2yge"]
-[ext_resource type="Texture2D" uid="uid://ddj30pdl8qrm7" path="res://assets/table.png" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://erdbr8t6hnn" path="res://assets/table.png" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://c60yi8nl0caxq" path="res://item/stack.tscn" id="5_lquwl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xm2m"]
@@ -14,6 +14,10 @@ size = Vector2(20, 700)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
 size = Vector2(1400, 20)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lquwl"]
+radius = 60.0
+height = 400.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -42,26 +46,6 @@ collision_mask = 6
 scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_0xm2m")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-collision_layer = 4
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, 350)
-shape = SubResource("RectangleShape2D_h2yge")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1156, 350)
-shape = SubResource("RectangleShape2D_h2yge")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(600, 0)
-shape = SubResource("RectangleShape2D_1bvp3")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(600, 656.804)
-shape = SubResource("RectangleShape2D_1bvp3")
-
 [node name="Table" type="Sprite2D" parent="."]
 z_index = -1
 texture_filter = 1
@@ -72,8 +56,38 @@ texture = ExtResource("4_1bvp3")
 region_enabled = true
 region_rect = Rect2(0, 0, 1400, 800)
 
+[node name="Bounds" type="StaticBody2D" parent="Table"]
+position = Vector2(-345.333, -221.961)
+scale = Vector2(0.666667, 0.666667)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Table/Bounds"]
+position = Vector2(0, 350)
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Table/Bounds"]
+position = Vector2(1156, 350)
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Table/Bounds"]
+position = Vector2(600, 0)
+shape = SubResource("RectangleShape2D_1bvp3")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Table/Bounds"]
+position = Vector2(600, 656.804)
+shape = SubResource("RectangleShape2D_1bvp3")
+
 [node name="Card" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(449, 358)
 
-[node name="Body" parent="." instance=ExtResource("5_lquwl")]
+[node name="Stack" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(659, 338)
+
+[node name="HandZone" type="Area2D" parent="."]
+position = Vector2(527, 572)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandZone"]
+position = Vector2(37, 14)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_lquwl")
