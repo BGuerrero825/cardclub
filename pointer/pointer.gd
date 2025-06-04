@@ -1,9 +1,9 @@
-class_name Thumb extends Node2D
+class_name Pointer extends Node2D
 
 var press_time := .0
 var press_wait := .3
 var last_pos = null
-var press_pos_delta = 5.
+var interact_pos_delta = 5.
 
 var pressing: Node2D = null
 var holding: Node2D = null
@@ -12,6 +12,7 @@ func _process(delta: float) -> void:
 
 	position = get_global_mouse_position()
 
+	# LMB interactions (click, hold)
 	if Input.is_action_just_pressed('lmb'):
 		pressing = get_hovered()
 		last_pos = position
@@ -21,13 +22,19 @@ func _process(delta: float) -> void:
 			process_interact(delta)
 
 	if Input.is_action_just_released('lmb'):
-		if holding:
-			print("dropping: ", holding)
-			holding = holding.handler.stop_interact()
 		pressing = null
 		press_time = 0
+		if not holding:
+			return
+		print("dropping: ", holding)
+		var dropped = holding
+		holding = holding.handler.stop_interact()
+		var hand = get_hand()
+		if hand:
+			hand.take_item(dropped)
 
 
+	# Other interactions (click only)
 	if Input.is_action_just_released('rmb'):
 		var item = holding if holding else get_hovered()
 		if item:
@@ -40,15 +47,15 @@ func _process(delta: float) -> void:
 			item.handler.flip()
 
 
+# INTERNALS #
+
 func get_hovered() -> ItemBody:
 	var overlaps = $Area2D.get_overlapping_bodies()
 	print("overlaps: ", overlaps)
-	if not overlaps.is_empty() and overlaps[0] is ItemBody:
-		return overlaps[0]
-	return null
+	return get_top_overlap(overlaps)
 
 func process_interact(delta: float):
-	if (last_pos - position).length() > press_pos_delta \
+	if (last_pos - position).length() > interact_pos_delta \
 	or not pressing.handler.has_method("long_interact"):
 		holding = pressing.handler.interact(self)
 	elif press_time > press_wait:
@@ -57,6 +64,28 @@ func process_interact(delta: float):
 		press_time += delta
 		last_pos = position 
 		return
-
 	pressing = null
 	press_time = .0
+
+func get_hand() -> Node2D:
+	var areas = $Area2D.get_overlapping_areas()
+	for area in areas:
+		print("checking: ", area)
+		if area is Hand:
+			print("hand: ", area)
+			return area
+	return null
+
+func get_top_overlap(overlaps: Array):
+	if overlaps.is_empty():
+		return null
+	var top: ItemBody = null
+	var top_index = 0
+	for item in overlaps:
+		if item is ItemBody and item.get_index() >= top_index:
+			top = item
+			top_index = item.get_index()
+	return top
+
+
+

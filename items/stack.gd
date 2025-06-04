@@ -7,7 +7,7 @@ var cards: Array[String] = \
  'as', '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'ts', 'js', 'qs', 'ks',
  'jo', 'jj']
 
-var card_scene = preload("res://item/card.tscn")
+var card_scene = preload("res://items/card.tscn")
 
 @onready var item := get_parent()
 

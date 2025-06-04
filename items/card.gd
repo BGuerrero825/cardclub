@@ -21,7 +21,9 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if item.holder:
+	if item.pointer:
+		rotate_to_hand()
+	elif item.hand:
 		rotate_to_hand()
 	else:
 		rotate_on_table(delta)
@@ -101,4 +103,3 @@ func frame_from_type() -> int:
 			return 52 # joker
 
 	return sprite_frame
-

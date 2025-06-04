@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://c60yi8nl0caxq"]
 
-[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://item/item.gd" id="1_7c0hu"]
-[ext_resource type="Script" uid="uid://ce7t8y8we8mog" path="res://item/item_body.gd" id="1_b3fv1"]
-[ext_resource type="Texture2D" uid="uid://dlnpa6dfmaoff" path="res://item/Deck.png" id="1_hmspu"]
-[ext_resource type="Script" uid="uid://dc8gxv84e45vp" path="res://item/stack.gd" id="2_304e4"]
-[ext_resource type="Script" uid="uid://df74uoqqfth6e" path="res://item/stack_handler.gd" id="2_p5usd"]
+[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://items/item.gd" id="1_7c0hu"]
+[ext_resource type="Script" uid="uid://ce7t8y8we8mog" path="res://items/item_body.gd" id="1_b3fv1"]
+[ext_resource type="Texture2D" uid="uid://dlnpa6dfmaoff" path="res://items/Deck.png" id="1_hmspu"]
+[ext_resource type="Script" uid="uid://dc8gxv84e45vp" path="res://items/stack.gd" id="2_304e4"]
+[ext_resource type="Script" uid="uid://df74uoqqfth6e" path="res://items/stack_handler.gd" id="2_p5usd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7c0hu"]
 size = Vector2(62, 98)

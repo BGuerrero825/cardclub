@@ -14,13 +14,14 @@ func interact(actor: Node2D):
 	return stack.draw(actor)
 
 func long_interact(actor: Node2D) -> Node2D:
-	item.pickup()
-	body.pickup(actor)
+	item.lift()
+	body.pointer = actor
 	return body
 
-func stop_interact():
+func stop_interact() -> ItemBody:
 	item.drop()
-	body.holder = null
+	body.pointer = null
+	return null
 
 func action():
 	# shuffle?
@@ -28,3 +29,6 @@ func action():
 
 func flip():
 	pass
+
+func enter_hand(_dummy):
+	return

@@ -16,7 +16,7 @@ func _physics_process(_delta: float) -> void:
 
 # EXTERNAL #
 
-func pickup():
+func lift():
 	height_dir = -1
 
 func drop():
