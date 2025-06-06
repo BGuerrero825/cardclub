@@ -9,8 +9,8 @@
 [ext_resource type="Script" uid="uid://d3ykh8ek3vvp3" path="res://hand/hand.gd" id="6_272bh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lquwl"]
-radius = 60.0
-height = 500.0
+radius = 50.0
+height = 400.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xm2m"]
 radius = 6.0
@@ -29,12 +29,14 @@ collision_mask = 3
 script = ExtResource("6_272bh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hand"]
+position = Vector2(0, 8)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_lquwl")
 
 [node name="Sprite2D" type="Sprite2D" parent="Hand"]
 self_modulate = Color(1, 1, 1, 0.345098)
-scale = Vector2(3, 1)
+position = Vector2(0, 11)
+scale = Vector2(3, 0.828125)
 texture = ExtResource("6_7mycd")
 
 [node name="Pointer" type="Node2D" parent="."]
@@ -46,14 +48,6 @@ script = ExtResource("1_1bvp3")
 position = Vector2(15, 14)
 scale = Vector2(2, 2)
 texture = ExtResource("1_ig7tw")
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="Pointer"]
-visible = false
-collision_mask = 6
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer/CharacterBody2D"]
-shape = SubResource("CircleShape2D_0xm2m")
-disabled = true
 
 [node name="Area2D" type="Area2D" parent="Pointer"]
 collision_mask = 7

@@ -12,6 +12,8 @@ var pointer: Pointer = null
 var hand: Hand = null
 var hand_pos = Vector2.ZERO
 
+signal grabbed_by(grabee, grabber)
+
 @onready var handler := $Handler
 
 func _ready() -> void:
@@ -40,3 +42,8 @@ func slide_velocity():
 	velocity = lerp(velocity, vz, friction)
 	if velocity.length() < 1:
 		velocity = vz
+
+func set_pointer(new_pointer: Pointer):
+	pointer = new_pointer
+	if pointer != null:
+		grabbed_by.emit(self, pointer)

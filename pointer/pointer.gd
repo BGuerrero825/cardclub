@@ -27,11 +27,7 @@ func _process(delta: float) -> void:
 		if not holding:
 			return
 		print("dropping: ", holding)
-		var dropped = holding
 		holding = holding.handler.stop_interact()
-		var hand = get_hand()
-		if hand:
-			hand.take_item(dropped)
 
 
 	# Other interactions (click only)
@@ -66,15 +62,6 @@ func process_interact(delta: float):
 		return
 	pressing = null
 	press_time = .0
-
-func get_hand() -> Node2D:
-	var areas = $Area2D.get_overlapping_areas()
-	for area in areas:
-		print("checking: ", area)
-		if area is Hand:
-			print("hand: ", area)
-			return area
-	return null
 
 func get_top_overlap(overlaps: Array):
 	if overlaps.is_empty():

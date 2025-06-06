@@ -10,17 +10,17 @@ const vz = Vector2.ZERO
 func _ready() -> void:
 	pass
 
-func interact(new_holder: Node2D) -> ItemBody:
+func interact(pointer: Pointer) -> ItemBody:
 	item.lift()
 	body.velocity = vz
-	body.pointer = new_holder
+	body.set_pointer(pointer)
 	body.move_to_front()
 	return body
 
 func stop_interact() -> ItemBody:
 	item.drop()
 	card.drop()
-	body.pointer = null
+	body.set_pointer(null)
 	return null
 
 func action():
@@ -32,14 +32,12 @@ func flip():
 	card.flip()
 
 func enter_hand(new_hand: Hand) -> ItemBody:
-	# TODO: trigger me on body entered if no pointer
-	item.lift()
 	body.velocity = vz
 	body.hand = new_hand
+	item.lift()
+	if !card.up:
+		card.flip()
 	return body
-
-func leave_hand():
-	body.hand = null
 
 func adjust_in_hand(new_pos: Vector2):
 	body.hand_pos = new_pos
