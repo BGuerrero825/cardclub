@@ -1,4 +1,4 @@
-extends Node2D
+class_name StackPart extends Node2D
 
 var cards: Array[String] = \
 ['ah', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'th', 'jh', 'qh', 'kh',
@@ -9,11 +9,13 @@ var cards: Array[String] = \
 
 var card_scene = preload("res://items/card.tscn")
 
-@onready var item := get_parent()
+@onready var item := $".."
 
 func draw(actor: Node2D) -> Node2D:
 	var card = card_scene.instantiate()
 	card.get_node("Card").type = cards.pop_front()
+	if cards.size() == 0:
+		item.queue_free()
 	get_parent().get_parent().add_child(card)
 	card.transform = self.get_global_transform()
-	return card.handler.interact(actor)
+	return card.iface.interact(actor)

@@ -1,4 +1,4 @@
-class_name Card extends Node2D 
+class_name CardPart extends Node2D 
 
 @export var type := 'jo'
 

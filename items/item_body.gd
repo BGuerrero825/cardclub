@@ -14,7 +14,7 @@ var hand_pos = Vector2.ZERO
 
 signal grabbed_by(grabee, grabber)
 
-@onready var handler := $Handler
+@onready var iface := $Interface
 
 func _ready() -> void:
 	# add some asserts
@@ -34,8 +34,6 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func magnetize_velocity(target: Vector2):
-	if target == Vector2.ZERO:
-		print("ZEROOOOOO target")
 	velocity = lerp(vz, target - self.position, magnetism)
 
 func slide_velocity():
