@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://items/item_part.gd" id="1_75kpa"]
 [ext_resource type="Script" uid="uid://ce7t8y8we8mog" path="res://items/item_body.gd" id="1_jhpbb"]
-[ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://items/Cards.png" id="1_kikvd"]
-[ext_resource type="Script" uid="uid://cg246n6g83gu5" path="res://items/card_part.gd" id="2_75kpa"]
-[ext_resource type="Script" uid="uid://8rf4fis8lejt" path="res://items/card_interface.gd" id="2_jhpbb"]
+[ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://items/card/Cards.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://cg246n6g83gu5" path="res://items/card/card_part.gd" id="2_75kpa"]
+[ext_resource type="Script" uid="uid://8rf4fis8lejt" path="res://items/card/card_interface.gd" id="2_jhpbb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kikvd"]
 size = Vector2(62, 86)
@@ -29,13 +29,14 @@ script = ExtResource("2_75kpa")
 self_modulate = Color(0, 0, 0, 0.298039)
 clip_children = 2
 texture_filter = 1
-scale = Vector2(2.05, 2.03)
+position = Vector2(-0.5, 0.5)
+scale = Vector2(2.07, 2.05)
 texture = ExtResource("1_kikvd")
 hframes = 13
 vframes = 5
 frame = 54
 
-[node name="Sprite2D" type="Sprite2D" parent="Animation"]
+[node name="CardSprite" type="Sprite2D" parent="Animation"]
 texture_filter = 1
 scale = Vector2(2, 2)
 texture = ExtResource("1_kikvd")

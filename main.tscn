@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://h3gjb7u1pnh1" path="res://pointer/pointer.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://cpirdksltlf01" path="res://pointer/pointer.png" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://fjbj1b16d37h" path="res://items/card.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://fjbj1b16d37h" path="res://items/card/card.tscn" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://ddj30pdl8qrm7" path="res://assets/table.png" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://c60yi8nl0caxq" path="res://items/stack.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://c60yi8nl0caxq" path="res://items/stack/stack.tscn" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://bnan8mo4h44aq" path="res://icon.svg" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://d3ykh8ek3vvp3" path="res://hand/hand.gd" id="6_272bh"]
 
@@ -34,13 +34,13 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_lquwl")
 
 [node name="Sprite2D" type="Sprite2D" parent="Hand"]
-self_modulate = Color(1, 1, 1, 0.345098)
+self_modulate = Color(0, 0, 0, 0.298039)
 position = Vector2(0, 11)
 scale = Vector2(3, 0.828125)
 texture = ExtResource("6_7mycd")
 
 [node name="Pointer" type="Node2D" parent="."]
-z_index = 3
+z_index = 30
 texture_filter = 1
 script = ExtResource("1_1bvp3")
 

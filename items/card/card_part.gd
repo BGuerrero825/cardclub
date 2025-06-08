@@ -12,7 +12,7 @@ var flip_dir := 0
 
 @onready var item := $".."
 @onready var anim := $"../Animation"
-@onready var sprite := $"../Animation/Sprite2D"
+@onready var sprite := $"../Animation/CardSprite"
 @onready var shadow := $"../Animation/Shadow"
 @onready var up_frame := frame_from_type()
 
@@ -21,9 +21,7 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if item.pointer:
-		rotate_to_hand()
-	elif item.hand:
+	if item.pointer or item.zone:
 		rotate_to_hand()
 	else:
 		rotate_on_table(delta)

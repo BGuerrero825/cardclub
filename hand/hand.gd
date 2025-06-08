@@ -35,7 +35,7 @@ func add_item(item: ItemBody):
 
 func remove_item(item: ItemBody, _grabber: Pointer):
 	# item.leave_hand() ?
-	item.hand = null
+	item.zone = null
 	item.grabbed_by.disconnect(remove_item)
 	cards.erase(item)
 
@@ -44,7 +44,7 @@ func suck_cards():
 	if self.get_overlapping_bodies().size() <= cards.size():
 		return
 	for item in self.get_overlapping_bodies():
-		if item is ItemBody and item.pointer == null and item.hand == null:
+		if item is ItemBody and item.pointer == null and item.zone == null:
 			add_item(item)
 
 
@@ -53,7 +53,7 @@ func adjust_cards():
 	# apply offsets based on index
 	for idx in range(cards.size()):
 		var xpos = self.global_position.x + start_at + (offset * idx)
-		cards[idx].iface.adjust_in_hand(Vector2(xpos, self.global_position.y))
+		cards[idx].iface.set_zone(Vector2(xpos, self.global_position.y))
 
 	adjusted_to_size = cards.size()
 

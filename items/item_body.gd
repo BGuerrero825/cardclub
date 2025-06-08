@@ -2,15 +2,15 @@ class_name ItemBody extends CharacterBody2D
 
 const vz = Vector2.ZERO 
 const TABLE_Z = 0
-const HAND_Z = 1
-const POINTER_Z = 2
+const HAND_Z = 10
+const POINTER_Z = 20
 
 @export var magnetism := 15.0
 @export var friction := .15
 
 var pointer: Pointer = null
-var hand: Hand = null
-var hand_pos = Vector2.ZERO
+var zone: Node2D = null
+var zone_pos = vz
 
 signal grabbed_by(grabee, grabber)
 
@@ -22,13 +22,13 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if pointer:
-		z_index = POINTER_Z 
+		z_index = POINTER_Z
 		magnetize_velocity(pointer.position)
-	elif hand:
+	elif zone:
 		z_index = HAND_Z
-		magnetize_velocity(hand_pos)
+		magnetize_velocity(zone_pos)
 	else: 
-		z_index = TABLE_Z 
+		z_index = TABLE_Z
 		slide_velocity()
 
 	move_and_slide()

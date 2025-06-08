@@ -9,7 +9,7 @@ var jumping = false
 
 @onready var body := $".."
 @onready var coll := $"../CollisionShape2D"
-@onready var sprite := $"../Animation/Sprite2D"
+@onready var sprite := $"../Animation/CardSprite"
 @onready var shadow := $"../Animation/Shadow"
 
 func _ready() -> void:

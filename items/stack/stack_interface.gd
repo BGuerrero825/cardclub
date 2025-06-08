@@ -10,12 +10,13 @@ const vz = Vector2.ZERO
 func _ready() -> void:
 	pass
 
-func interact(actor: Node2D):
+func interact(actor: Node2D) -> ItemBody:
 	return stack.draw(actor)
 
 func long_interact(actor: Node2D) -> Node2D:
 	item.lift()
 	body.pointer = actor
+	body.move_to_front()
 	return body
 
 func stop_interact() -> ItemBody:
