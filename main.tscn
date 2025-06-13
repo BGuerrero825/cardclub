@@ -9,8 +9,8 @@
 [ext_resource type="Script" uid="uid://d3ykh8ek3vvp3" path="res://hand/hand.gd" id="6_272bh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lquwl"]
-radius = 50.0
-height = 400.0
+radius = 41.0
+height = 380.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xm2m"]
 radius = 6.0
@@ -29,7 +29,7 @@ collision_mask = 3
 script = ExtResource("6_272bh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hand"]
-position = Vector2(0, 8)
+position = Vector2(0, 10)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_lquwl")
 
@@ -88,10 +88,20 @@ position = Vector2(600, 656.804)
 shape = SubResource("RectangleShape2D_1bvp3")
 
 [node name="Card" parent="." instance=ExtResource("3_h2yge")]
-position = Vector2(449, 358)
+position = Vector2(172, 161)
 
 [node name="Stack" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(659, 338)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(583, 330)
+ignore_rotation = false
+
+[node name="Card2" parent="." instance=ExtResource("3_h2yge")]
+position = Vector2(402, 159)
+
+[node name="Card3" parent="." instance=ExtResource("3_h2yge")]
+position = Vector2(288, 158)
+
+[node name="Stack2" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(280.457, 481.17)

@@ -7,12 +7,14 @@ const POINTER_Z = 20
 
 @export var magnetism := 15.0
 @export var friction := .15
+@export var snap_distance := 1.5 
 
 var pointer: Pointer = null
-var zone: Node2D = null
-var zone_pos = vz
+var tether: Node2D = null
+var hand_pos = vz
 
-signal grabbed_by(grabee, grabber)
+signal grabbed_by(item, pointer)
+signal reached_target(item, target_pos)
 
 @onready var iface := $Interface
 
@@ -21,25 +23,36 @@ func _ready() -> void:
 	pass
 
 func _physics_process(_delta: float) -> void:
+	var target_pos = null
 	if pointer:
 		z_index = POINTER_Z
-		magnetize_velocity(pointer.position)
-	elif zone:
+		target_pos = pointer.global_position
+	elif tether:
 		z_index = HAND_Z
-		magnetize_velocity(zone_pos)
+		if hand_pos:
+			target_pos = hand_pos
+		else:
+			print("goto tether")
+			target_pos = tether.global_position
 	else: 
 		z_index = TABLE_Z
-		slide_velocity()
+	
+	move_item(target_pos)
 
-	move_and_slide()
 
-func magnetize_velocity(target: Vector2):
-	velocity = lerp(vz, target - self.position, magnetism)
+func move_item(target_pos):
+	if target_pos:
+		velocity = lerp(vz, target_pos - self.global_position, magnetism)
+		move_and_slide()
+		if (self.global_position - target_pos).length() < snap_distance:
+			self.global_position = target_pos
+			reached_target.emit(self, target_pos)
+	else:
+		velocity = lerp(velocity, vz, friction)
+		if velocity.length() < 1:
+			velocity = vz
+		move_and_slide()
 
-func slide_velocity():
-	velocity = lerp(velocity, vz, friction)
-	if velocity.length() < 1:
-		velocity = vz
 
 func set_pointer(new_pointer: Pointer):
 	pointer = new_pointer

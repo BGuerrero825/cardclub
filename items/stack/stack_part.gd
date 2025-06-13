@@ -1,5 +1,7 @@
 class_name StackPart extends Node2D
 
+const ESCAPE_VELO = 150.
+const SIZE_BASE := 54
 
 var cards: Array[String] = \
 ['ah', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'th', 'jh', 'qh', 'kh',
@@ -9,16 +11,24 @@ var cards: Array[String] = \
  'jo', 'jj']
 
 var card_scene = preload("res://items/card/card.tscn")
+var up := false
+var shuffling := false
+var shuffle_step := 5
+var shuffle_stagger := .4
 
 @onready var body := $".."
 @onready var sprite := $"../Animation/CardSprite"
 @onready var area := $"../Area2D"
-@onready var init_size := cards.size()
+@onready var card_sprites := sprite.get_children()
+
 
 func _process(_delta: float) -> void:
 	suck_cards()
 
-func draw(actor: Node2D) -> ItemBody:
+	if shuffling: animate_shuffle()
+
+
+func draw_card(actor: Node2D) -> ItemBody:
 	var drawn_card = spawn_card()
 
 	if cards.size() == 1:
@@ -32,12 +42,22 @@ func draw(actor: Node2D) -> ItemBody:
 
 	return drawn_card.iface.interact(actor)
 
-func stack_card(item: ItemBody):
-	print("stacking card")
-	cards.push_front(item.iface.card.type)
-	item.iface.stack_recall(area)
 
-	show_sprites()
+func tether_card(card: ItemBody):
+	card.iface.set_tether(area)
+	card.iface.to_stack(up)
+	card.connect("reached_target", stack_card)
+
+
+func stack_card(card: ItemBody, _target_pos):
+	if card.iface.is_flipped(up):
+		cards.push_front(card.iface.card.type)
+		card.reached_target.disconnect(stack_card)
+		card.queue_free()
+		show_sprites()
+	elif card.iface.is_flipped(!up):
+		card.iface.flip()
+
 
 func spawn_card() -> ItemBody:
 	var card = card_scene.instantiate()
@@ -48,29 +68,45 @@ func spawn_card() -> ItemBody:
 
 
 func show_sprites():
-	var card_sprites = sprite.get_child_count()
-	print("card_sprites: ", card_sprites)
-	var interval = init_size / float(card_sprites - 1)
-	var drawn = init_size - cards.size()
+	var interval = SIZE_BASE / float(- 1)
+	var drawn = max(SIZE_BASE - cards.size(), 0)
 	@warning_ignore("integer_division")
 	var to_hide: int = int(drawn / interval)
 	print("to_hide: ", to_hide)
 
-	for idx in range(1, card_sprites + 1):
-		sprite.get_node("Sprite"+str(idx)).visible = true
+	for card_sprite in card_sprites: # reveal all cards
+		sprite.visible = true
 
-	for idx in range(1, to_hide + 1):
-		sprite.get_node("Sprite"+str(idx)).visible = false
+	for idx in range(to_hide): # re-hide cards based on amount of cards drawn
+		card_sprites[(card_sprites.size() - idx) - 1].visible = false
+	
+	area.position = card_sprites[(card_sprites.size() - to_hide) - 1].position
 
+func shuffle():
+	cards.shuffle()
+	shuffling = true
+
+func animate_shuffle():
+	for idx in range(card_sprites.size()):
+		if abs(card_sprites[idx].rotation_degrees) >= 360:
+			card_sprites[idx].rotation_degrees = 360
+			continue
+		var dir = 1 if idx % 2 == 0 else -1
+		card_sprites[idx].rotation_degrees += dir * (shuffle_step + idx * shuffle_stagger)
+
+	if abs(card_sprites[0].rotation_degrees) >= 360: # reset cards when slowest card hits 360
+		shuffling = false
+		for idx in range(card_sprites.size()):
+			card_sprites[idx].rotation_degrees = 0
+	print("rotation degs", card_sprites[0].rotation_degrees)
 
 func suck_cards():
 	if area.get_overlapping_bodies().size() < 1:
 		return
+
 	for overlap in area.get_overlapping_bodies():
-		if overlap != body and overlap.pointer == null:
-			if overlap.zone == null:
-				stack_card(overlap)
-			elif overlap.zone == area and (overlap.global_position - area.global_position).length() < .1:
-				overlap.queue_free()
-
-
+		if overlap is ItemBody and "card" in overlap.iface \
+		and overlap.pointer == null and overlap.tether == null:
+			if overlap.velocity.length() < ESCAPE_VELO:
+				tether_card(overlap)
+				

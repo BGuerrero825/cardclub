@@ -21,7 +21,7 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if item.pointer or item.zone:
+	if item.pointer or item.tether:
 		rotate_to_hand()
 	else:
 		rotate_on_table(delta)
@@ -64,7 +64,7 @@ func animate_flip():
 func flip_frame():
 	if up:
 		sprite.frame = 54 # card back
-		up = false 
+		up = false
 	else:
 		sprite.frame = up_frame
 		up = true

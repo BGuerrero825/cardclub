@@ -1,4 +1,4 @@
-class_name StackHandler extends Node2D 
+class_name StackInterface extends Node2D 
 
 const vz = Vector2.ZERO 
 
@@ -11,7 +11,7 @@ func _ready() -> void:
 	pass
 
 func interact(actor: Node2D) -> ItemBody:
-	return stack.draw(actor)
+	return stack.draw_card(actor)
 
 func long_interact(actor: Node2D) -> Node2D:
 	item.lift()
@@ -25,7 +25,7 @@ func stop_interact() -> ItemBody:
 	return null
 
 func action():
-	# shuffle?
+	stack.shuffle()
 	pass
 
 func flip():
