@@ -1,4 +1,4 @@
-class_name StackPart extends Node2D
+class_name StackComponent extends Node2D
 
 const ESCAPE_VELO = 150.
 const SIZE_BASE := 54
@@ -40,23 +40,23 @@ func draw_card(actor: Node2D) -> ItemBody:
 
 	show_sprites()
 
-	return drawn_card.iface.interact(actor)
+	return drawn_card.interact(actor)
 
 
 func tether_card(card: ItemBody):
-	card.iface.set_tether(area)
-	card.iface.to_stack(up)
+	card.set_tether(area)
+	card.to_stack(up)
 	card.connect("reached_target", stack_card)
 
 
 func stack_card(card: ItemBody, _target_pos):
-	if card.iface.is_flipped(up):
-		cards.push_front(card.iface.card.type)
+	if card.is_flipped(up):
+		cards.push_front(card.cardcom.type)
 		card.reached_target.disconnect(stack_card)
 		card.queue_free()
 		show_sprites()
-	elif card.iface.is_flipped(!up):
-		card.iface.flip()
+	elif card.is_flipped(!up):
+		card.flip()
 
 
 func spawn_card() -> ItemBody:
@@ -100,7 +100,6 @@ func animate_shuffle():
 		shuffling = false
 		for idx in range(card_sprites.size()):
 			card_sprites[idx].rotation_degrees = 0
-	print("rotation degs", card_sprites[0].rotation_degrees)
 
 
 func suck_cards():
@@ -108,8 +107,7 @@ func suck_cards():
 		return
 
 	for overlap in area.get_overlapping_bodies():
-		if overlap is ItemBody and "card" in overlap.iface \
+		if overlap is ItemBody and overlap.cardcom \
 		and overlap.pointer == null and overlap.tether == null:
 			if overlap.velocity.length() < ESCAPE_VELO:
 				tether_card(overlap)
-				

@@ -7,3 +7,4 @@ web/
 *.uid
 .gitattributes
 .vscode
+godothost

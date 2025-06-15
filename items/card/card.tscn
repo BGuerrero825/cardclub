@@ -1,19 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://fjbj1b16d37h"]
 
-[ext_resource type="Script" uid="uid://bkfjm23kjikbc" path="res://items/item_part.gd" id="1_75kpa"]
+[ext_resource type="Script" uid="uid://b5wncjj3xrokq" path="res://items/item_component.gd" id="1_75kpa"]
 [ext_resource type="Script" uid="uid://ce7t8y8we8mog" path="res://items/item_body.gd" id="1_jhpbb"]
 [ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://items/card/Cards.png" id="1_kikvd"]
-[ext_resource type="Script" uid="uid://cg246n6g83gu5" path="res://items/card/card_part.gd" id="2_75kpa"]
+[ext_resource type="Script" uid="uid://ba4tdu03bb72c" path="res://items/card/card_component.gd" id="2_75kpa"]
 [ext_resource type="Script" uid="uid://8rf4fis8lejt" path="res://items/card/card_interface.gd" id="2_jhpbb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kikvd"]
 size = Vector2(62, 86)
 
-[node name="Card" type="CharacterBody2D"]
+[node name="Card" type="CharacterBody2D" node_paths=PackedStringArray("itemcom", "cardcom")]
 texture_filter = 1
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_jhpbb")
+itemcom = NodePath("Item")
+cardcom = NodePath("Card")
 
 [node name="Interface" type="Node2D" parent="."]
 script = ExtResource("2_jhpbb")

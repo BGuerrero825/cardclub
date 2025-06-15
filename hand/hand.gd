@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 
 
 func add_item(item: ItemBody):
-	var new_item = item.iface.enter_hand(self)
+	var new_item = item.enter_hand(self)
 	if new_item == null:
 		return
 	var rel_pos = new_item.global_position - self.global_position
@@ -55,7 +55,7 @@ func adjust_cards():
 	# apply offsets based on index
 	for idx in range(cards.size()):
 		var xpos = self.global_position.x + start_at + (offset * idx)
-		cards[idx].iface.set_hand_pos(self, Vector2(xpos, self.global_position.y))
+		cards[idx].set_hand_pos(self, Vector2(xpos, self.global_position.y))
 
 	adjusted_to_size = cards.size()
 

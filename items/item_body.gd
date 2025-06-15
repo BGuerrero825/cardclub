@@ -5,22 +5,101 @@ const TABLE_Z = 0
 const HAND_Z = 10
 const POINTER_Z = 20
 
+@export var itemcom: ItemComponent = null # Item Component 
+@export var cardcom: CardComponent = null # Card Component 
+@export var stackcom: StackComponent = null # Stack Component 
+
 @export var magnetism := 15.0
 @export var friction := .15
 @export var snap_distance := 1.5 
 
 var pointer: Pointer = null
 var tether: Node2D = null
-var hand_pos = vz
+var hand_pos = null
 
 signal grabbed_by(item, pointer)
 signal reached_target(item, target_pos)
 
-@onready var iface := $Interface
-
 func _ready() -> void:
-	# add some asserts
+	assert(itemcom != null, "No 'itemcom' node assigned as an item component!")
+
+func interact(_pointer: Pointer) -> ItemBody:
+	if cardcom:
+		itemcom.lift()
+		velocity = vz
+		set_pointer(_pointer)
+		move_to_front()
+		return self
+	elif stackcom:
+		return stackcom.draw_card(_pointer)
+	return null
+
+func long_interact(_pointer: Pointer) -> ItemBody:
+	if stackcom:
+		itemcom.lift()
+		set_pointer(_pointer)
+		move_to_front()
+		return self 
+	return null
+		
+func stop_interact() -> ItemBody:
+	itemcom.drop()
+	set_pointer(null)
+	if cardcom:
+		cardcom.drop()
+	elif stackcom:
+		pass
+	return null
+
+func action():
+	if cardcom:
+		flip()
+	elif stackcom:
+		stackcom.shuffle()
+		if not pointer:
+			itemcom.jump()
 	pass
+
+func flip():
+	if not pointer and not tether:
+		itemcom.jump()
+	if cardcom:
+		cardcom.flip()
+
+func enter_hand(new_hand: Hand) -> ItemBody:
+	if cardcom:
+		velocity = vz
+		tether = new_hand
+		itemcom.lift()
+		if !cardcom.up:
+			cardcom.flip()
+		return self 
+	return null
+
+func to_stack(stack_up: bool):
+	if cardcom:
+		if stack_up != cardcom.up:
+			cardcom.flip()
+
+func set_tether(new_tether: Area2D):
+	tether = new_tether 
+	move_to_front()
+
+func set_hand_pos(new_hand, new_hand_pos):
+	tether = new_hand 
+	hand_pos = new_hand_pos
+	move_to_front()
+
+func is_flipped(up: bool):
+	if cardcom:
+		if cardcom.up == up and cardcom.flip_dir == 0:
+			return true
+	return false
+
+func set_pointer(new_pointer: Pointer):
+	pointer = new_pointer
+	if pointer != null:
+		grabbed_by.emit(self, pointer)
 
 func _physics_process(_delta: float) -> void:
 	var target_pos = null
@@ -53,7 +132,3 @@ func move_item(target_pos):
 		move_and_slide()
 
 
-func set_pointer(new_pointer: Pointer):
-	pointer = new_pointer
-	if pointer != null:
-		grabbed_by.emit(self, pointer)

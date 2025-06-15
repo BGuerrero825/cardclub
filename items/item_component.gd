@@ -1,4 +1,4 @@
-class_name ItemPart extends Node2D 
+class_name ItemComponent extends Node2D 
 
 var height_dir := 0
 var height_pos := 0

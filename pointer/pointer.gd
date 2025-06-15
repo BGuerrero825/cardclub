@@ -27,20 +27,20 @@ func _process(delta: float) -> void:
 		if not holding:
 			return
 		print("dropping: ", holding)
-		holding = holding.iface.stop_interact()
+		holding = holding.stop_interact()
 
 
 	# Other interactions (click only)
 	if Input.is_action_just_released('rmb'):
 		var item = holding if holding else get_hovered()
 		if item:
-			item.iface.action()
+			item.action()
 
 	if Input.is_action_just_released('flip'):
 		print("flip: ", pressing)
 		var item = holding if holding else get_hovered()
 		if item:
-			item.iface.flip()
+			item.flip()
 
 
 # INTERNALS #
@@ -52,10 +52,10 @@ func get_hovered() -> ItemBody:
 
 func process_interact(delta: float):
 	if (last_pos - position).length() > interact_pos_delta \
-	or not pressing.iface.has_method("long_interact"):
-		holding = pressing.iface.interact(self)
+	or not pressing.has_method("long_interact"):
+		holding = pressing.interact(self)
 	elif press_time > press_wait:
-		holding = pressing.iface.long_interact(self)
+		holding = pressing.long_interact(self)
 	else:
 		press_time += delta
 		last_pos = position 
