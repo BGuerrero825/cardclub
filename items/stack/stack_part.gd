@@ -68,8 +68,10 @@ func spawn_card() -> ItemBody:
 
 
 func show_sprites():
-	var interval = SIZE_BASE / float(- 1)
+	@warning_ignore("integer_division")
+	var interval = SIZE_BASE / (card_sprites.size() - 1)
 	var drawn = max(SIZE_BASE - cards.size(), 0)
+	print("drawn: ", drawn)
 	@warning_ignore("integer_division")
 	var to_hide: int = int(drawn / interval)
 	print("to_hide: ", to_hide)
@@ -99,6 +101,7 @@ func animate_shuffle():
 		for idx in range(card_sprites.size()):
 			card_sprites[idx].rotation_degrees = 0
 	print("rotation degs", card_sprites[0].rotation_degrees)
+
 
 func suck_cards():
 	if area.get_overlapping_bodies().size() < 1:

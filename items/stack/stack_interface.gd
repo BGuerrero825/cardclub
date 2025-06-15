@@ -26,6 +26,8 @@ func stop_interact() -> ItemBody:
 
 func action():
 	stack.shuffle()
+	if not body.pointer:
+		item.jump()
 	pass
 
 func flip():

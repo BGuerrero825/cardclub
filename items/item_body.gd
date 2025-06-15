@@ -32,7 +32,6 @@ func _physics_process(_delta: float) -> void:
 		if hand_pos:
 			target_pos = hand_pos
 		else:
-			print("goto tether")
 			target_pos = tether.global_position
 	else: 
 		z_index = TABLE_Z

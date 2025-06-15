@@ -24,6 +24,9 @@ script = ExtResource("2_p5usd")
 
 [node name="Item" type="Node2D" parent="."]
 script = ExtResource("1_7c0hu")
+height_apex = -25
+height_speed = 5
+jump_timer = 30
 
 [node name="Stack" type="Node2D" parent="."]
 script = ExtResource("2_304e4")

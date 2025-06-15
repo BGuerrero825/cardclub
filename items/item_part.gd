@@ -1,11 +1,13 @@
 class_name ItemPart extends Node2D 
 
-const height_speed := 4
-const height_min := -20
-
 var height_dir := 0
 var height_pos := 0
 var jumping = false 
+var jump_hang = 0
+
+@export var height_apex = -20
+@export var height_speed = 4
+@export var jump_timer = 0
 
 @onready var body := $".."
 @onready var coll := $"../CollisionShape2D"
@@ -31,15 +33,20 @@ func jump():
 	body.move_to_front()
 	height_dir = -1
 	jumping = true
+	jump_hang = jump_timer
 	
 
 # INTERNAL #
 
 func animate_height():
+	if height_dir == 1 and jump_hang > 0:
+		jump_hang -= 1
+		return
+
 	height_pos += height_dir * height_speed
 
-	if height_pos < height_min: # hit apex
-		height_pos = height_min
+	if height_pos < height_apex: # hit apex
+		height_pos = height_apex
 		height_dir = 0
 		if jumping:
 			height_dir = 1
