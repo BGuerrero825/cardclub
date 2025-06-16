@@ -10,10 +10,11 @@ var flip_step = .2
 var up := false
 var flip_dir := 0
 
-@onready var item := $".."
+@onready var body := $".."
 @onready var anim := $"../Animation"
 @onready var sprite := $"../Animation/CardSprite"
 @onready var shadow := $"../Animation/Shadow"
+@onready var stacker := $"../Stacker"
 @onready var up_frame := frame_from_type()
 
 
@@ -21,7 +22,7 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if item.pointer or item.tether:
+	if body.pointer or body.tether:
 		rotate_to_hand()
 	else:
 		rotate_on_table(delta)
@@ -32,8 +33,26 @@ func _physics_process(delta: float) -> void:
 
 # EXTERNAL #
 
+func try_stacking() -> ItemBody:
+	var overlaps = stacker.get_overlapping_bodies()
+	if overlaps.size() <= 1:
+		return null
+
+	overlaps.erase(body)
+	if overlaps[0] is ItemBody and overlaps[0].cardcom \
+	and overlaps[0].pointer == null and overlaps[0].tether == null:
+		var stack = Global.spawner.spawn_stack()
+		stack.position = body.position
+		stack.stackcom.cards.clear()
+		stack.stackcom.cards.append(self.type)
+		stack.stackcom.show_sprites()
+		body.queue_free()
+		return stack
+
+	return null
+
 func drop():
-	angular_velocity = item.velocity.x * angular_velocity_ratio
+	angular_velocity = body.velocity.x * angular_velocity_ratio
 	
 func flip():
 	if flip_dir == 0:
@@ -46,7 +65,7 @@ func rotate_to_hand():
 	anim.rotation = lerp(anim.rotation, 0., rotation_magnetism)
 
 func rotate_on_table(delta):
-	angular_velocity = lerp(angular_velocity, 0., item.friction)
+	angular_velocity = lerp(angular_velocity, 0., body.friction)
 	anim.rotate(angular_velocity * delta)
 
 func animate_flip():

@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://c60yi8nl0caxq"]
+[gd_scene load_steps=9 format=3 uid="uid://c60yi8nl0caxq"]
 
 [ext_resource type="Script" uid="uid://b5wncjj3xrokq" path="res://items/item_component.gd" id="1_7c0hu"]
 [ext_resource type="Script" uid="uid://ce7t8y8we8mog" path="res://items/item_body.gd" id="1_b3fv1"]
 [ext_resource type="Script" uid="uid://uftgdpw3el7c" path="res://items/stack/stack_component.gd" id="2_304e4"]
+[ext_resource type="LabelSettings" uid="uid://bipj62v2iwe3" path="res://fonts/debug_label.tres" id="5_2chw8"]
 [ext_resource type="Texture2D" uid="uid://3a4blssh7vks" path="res://items/card/Cards.png" id="6_2chw8"]
+[ext_resource type="Script" uid="uid://dh2kl4ssucl4y" path="res://debug.gd" id="6_71bvq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7c0hu"]
 size = Vector2(62, 98)
@@ -30,6 +32,7 @@ jump_timer = 30
 script = ExtResource("2_304e4")
 
 [node name="Animation" type="Node2D" parent="."]
+position = Vector2(0, -12)
 
 [node name="Shadow" type="Sprite2D" parent="Animation"]
 self_modulate = Color(0, 0, 0, 0.298039)
@@ -42,7 +45,7 @@ vframes = 5
 
 [node name="CardSprite" type="Node2D" parent="Animation"]
 
-[node name="Sprite7" type="Sprite2D" parent="Animation/CardSprite"]
+[node name="Sprite0" type="Sprite2D" parent="Animation/CardSprite"]
 position = Vector2(0, 12)
 scale = Vector2(2, 2)
 texture = ExtResource("6_2chw8")
@@ -50,96 +53,7 @@ hframes = 13
 vframes = 5
 frame = 54
 
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite7"]
-self_modulate = Color(0, 0, 0, 0.298039)
-show_behind_parent = true
-position = Vector2(0, 0.5)
-scale = Vector2(1, 1.015)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Sprite6" type="Sprite2D" parent="Animation/CardSprite"]
-position = Vector2(0, 9)
-scale = Vector2(2, 2)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite6"]
-self_modulate = Color(0, 0, 0, 0.298039)
-show_behind_parent = true
-position = Vector2(0, 0.5)
-scale = Vector2(1, 1.015)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Sprite5" type="Sprite2D" parent="Animation/CardSprite"]
-position = Vector2(0, 6)
-scale = Vector2(2, 2)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite5"]
-self_modulate = Color(0, 0, 0, 0.298039)
-show_behind_parent = true
-position = Vector2(0, 0.5)
-scale = Vector2(1, 1.015)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Sprite4" type="Sprite2D" parent="Animation/CardSprite"]
-position = Vector2(0, 3)
-scale = Vector2(2, 2)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite4"]
-self_modulate = Color(0, 0, 0, 0.298039)
-show_behind_parent = true
-position = Vector2(0, 0.5)
-scale = Vector2(1, 1.015)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Sprite3" type="Sprite2D" parent="Animation/CardSprite"]
-scale = Vector2(2, 2)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite3"]
-self_modulate = Color(0, 0, 0, 0.298039)
-show_behind_parent = true
-position = Vector2(0, 0.5)
-scale = Vector2(1, 1.015)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Sprite2" type="Sprite2D" parent="Animation/CardSprite"]
-position = Vector2(0, -3)
-scale = Vector2(2, 2)
-texture = ExtResource("6_2chw8")
-hframes = 13
-vframes = 5
-frame = 54
-
-[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite2"]
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite0"]
 self_modulate = Color(0, 0, 0, 0.298039)
 show_behind_parent = true
 position = Vector2(0, 0.5)
@@ -150,7 +64,7 @@ vframes = 5
 frame = 54
 
 [node name="Sprite1" type="Sprite2D" parent="Animation/CardSprite"]
-position = Vector2(0, -6)
+position = Vector2(0, 9)
 scale = Vector2(2, 2)
 texture = ExtResource("6_2chw8")
 hframes = 13
@@ -167,14 +81,111 @@ hframes = 13
 vframes = 5
 frame = 54
 
+[node name="Sprite2" type="Sprite2D" parent="Animation/CardSprite"]
+position = Vector2(0, 6)
+scale = Vector2(2, 2)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite2"]
+self_modulate = Color(0, 0, 0, 0.298039)
+show_behind_parent = true
+position = Vector2(0, 0.5)
+scale = Vector2(1, 1.015)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Sprite3" type="Sprite2D" parent="Animation/CardSprite"]
+position = Vector2(0, 3)
+scale = Vector2(2, 2)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite3"]
+self_modulate = Color(0, 0, 0, 0.298039)
+show_behind_parent = true
+position = Vector2(0, 0.5)
+scale = Vector2(1, 1.015)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Sprite4" type="Sprite2D" parent="Animation/CardSprite"]
+scale = Vector2(2, 2)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite4"]
+self_modulate = Color(0, 0, 0, 0.298039)
+show_behind_parent = true
+position = Vector2(0, 0.5)
+scale = Vector2(1, 1.015)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Sprite5" type="Sprite2D" parent="Animation/CardSprite"]
+position = Vector2(0, -3)
+scale = Vector2(2, 2)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite5"]
+self_modulate = Color(0, 0, 0, 0.298039)
+show_behind_parent = true
+position = Vector2(0, 0.5)
+scale = Vector2(1, 1.015)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Sprite6" type="Sprite2D" parent="Animation/CardSprite"]
+position = Vector2(0, -6)
+scale = Vector2(2, 2)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
+[node name="Shadow" type="Sprite2D" parent="Animation/CardSprite/Sprite6"]
+self_modulate = Color(0, 0, 0, 0.298039)
+show_behind_parent = true
+position = Vector2(0, 0.5)
+scale = Vector2(1, 1.015)
+texture = ExtResource("6_2chw8")
+hframes = 13
+vframes = 5
+frame = 54
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("RectangleShape2D_7c0hu")
 
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(0, -6)
+[node name="Debug" type="Label" parent="."]
+offset_left = 38.0
+offset_top = -49.0
+offset_right = 81.0
+offset_bottom = -26.0
+text = "debug"
+label_settings = ExtResource("5_2chw8")
+script = ExtResource("6_71bvq")
+
+[node name="Tether" type="Area2D" parent="."]
+position = Vector2(0, -18)
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tether"]
 shape = SubResource("RectangleShape2D_28i0f")

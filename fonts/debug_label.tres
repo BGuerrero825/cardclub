@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bipj62v2iwe3"]
+
+[ext_resource type="FontFile" uid="uid://cypa7fd0h7as3" path="res://fonts/coolvetica.ttf" id="1_5tigk"]
+
+[resource]
+line_spacing = 0.5
+font = ExtResource("1_5tigk")
+font_size = 11

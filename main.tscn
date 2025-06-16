@@ -1,19 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://dkyiahr4xu1kj"]
+[gd_scene load_steps=11 format=3 uid="uid://dkyiahr4xu1kj"]
 
-[ext_resource type="Script" uid="uid://h3gjb7u1pnh1" path="res://pointer/pointer.gd" id="1_1bvp3"]
-[ext_resource type="Texture2D" uid="uid://cpirdksltlf01" path="res://pointer/pointer.png" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://d28funpvmh0y" path="res://pointer/pointer.tscn" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://fjbj1b16d37h" path="res://items/card/card.tscn" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://ddj30pdl8qrm7" path="res://assets/table.png" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://c60yi8nl0caxq" path="res://items/stack/stack.tscn" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://bnan8mo4h44aq" path="res://icon.svg" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://d3ykh8ek3vvp3" path="res://hand/hand.gd" id="6_272bh"]
+[ext_resource type="Script" uid="uid://bp3hg5ur46lfl" path="res://spawner.gd" id="7_272bh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lquwl"]
 radius = 41.0
 height = 380.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_0xm2m"]
-radius = 6.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
 size = Vector2(20, 700)
@@ -39,21 +36,7 @@ position = Vector2(0, 11)
 scale = Vector2(3, 0.828125)
 texture = ExtResource("6_7mycd")
 
-[node name="Pointer" type="Node2D" parent="."]
-z_index = 30
-texture_filter = 1
-script = ExtResource("1_1bvp3")
-
-[node name="Sprite2D" type="Sprite2D" parent="Pointer"]
-position = Vector2(15, 14)
-scale = Vector2(2, 2)
-texture = ExtResource("1_ig7tw")
-
-[node name="Area2D" type="Area2D" parent="Pointer"]
-collision_mask = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer/Area2D"]
-shape = SubResource("CircleShape2D_0xm2m")
+[node name="Pointer" parent="." instance=ExtResource("3_7mycd")]
 
 [node name="Table" type="Sprite2D" parent="."]
 z_index = -1
@@ -105,3 +88,7 @@ position = Vector2(288, 158)
 
 [node name="Stack2" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(280.457, 481.17)
+
+[node name="Spawner" type="Node2D" parent="."]
+position = Vector2(980, 120)
+script = ExtResource("7_272bh")

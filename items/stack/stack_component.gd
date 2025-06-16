@@ -18,7 +18,7 @@ var shuffle_stagger := .4
 
 @onready var body := $".."
 @onready var sprite := $"../Animation/CardSprite"
-@onready var area := $"../Area2D"
+@onready var tether := $"../Tether"
 @onready var card_sprites := sprite.get_children()
 
 
@@ -27,13 +27,19 @@ func _process(_delta: float) -> void:
 
 	if shuffling: animate_shuffle()
 
+# EXTERNAL #
+
+func lift():
+	tether.scale *= 1.2
+
+func drop():
+	tether.scale /= 1.2
 
 func draw_card(actor: Node2D) -> ItemBody:
 	var drawn_card = spawn_card()
 
 	if cards.size() == 1:
-		var final_card = spawn_card()
-		final_card.position.y += 12
+		spawn_card()
 
 	if cards.size() <= 0:
 		body.queue_free()
@@ -44,7 +50,7 @@ func draw_card(actor: Node2D) -> ItemBody:
 
 
 func tether_card(card: ItemBody):
-	card.set_tether(area)
+	card.set_tether(tether)
 	card.to_stack(up)
 	card.connect("reached_target", stack_card)
 
@@ -54,39 +60,15 @@ func stack_card(card: ItemBody, _target_pos):
 		cards.push_front(card.cardcom.type)
 		card.reached_target.disconnect(stack_card)
 		card.queue_free()
-		show_sprites()
 	elif card.is_flipped(!up):
 		card.flip()
+	show_sprites()
 
-
-func spawn_card() -> ItemBody:
-	var card = card_scene.instantiate()
-	card.get_node("Card").type = cards.pop_front()
-	get_parent().get_parent().add_child(card)
-	card.transform = body.get_global_transform()
-	return card
-
-
-func show_sprites():
-	@warning_ignore("integer_division")
-	var interval = SIZE_BASE / (card_sprites.size() - 1)
-	var drawn = max(SIZE_BASE - cards.size(), 0)
-	print("drawn: ", drawn)
-	@warning_ignore("integer_division")
-	var to_hide: int = int(drawn / interval)
-	print("to_hide: ", to_hide)
-
-	for card_sprite in card_sprites: # reveal all cards
-		sprite.visible = true
-
-	for idx in range(to_hide): # re-hide cards based on amount of cards drawn
-		card_sprites[(card_sprites.size() - idx) - 1].visible = false
-	
-	area.position = card_sprites[(card_sprites.size() - to_hide) - 1].position
 
 func shuffle():
 	cards.shuffle()
 	shuffling = true
+
 
 func animate_shuffle():
 	for idx in range(card_sprites.size()):
@@ -102,12 +84,42 @@ func animate_shuffle():
 			card_sprites[idx].rotation_degrees = 0
 
 
-func suck_cards():
-	if area.get_overlapping_bodies().size() < 1:
-		return
+# INTERNAL #
 
-	for overlap in area.get_overlapping_bodies():
+func suck_cards():
+	var overlaps: Array = tether.get_overlapping_bodies()
+	if overlaps.size() <= 1:
+		return
+	overlaps.erase(body)
+
+	for overlap in overlaps:
 		if overlap is ItemBody and overlap.cardcom \
 		and overlap.pointer == null and overlap.tether == null:
 			if overlap.velocity.length() < ESCAPE_VELO:
 				tether_card(overlap)
+
+
+func spawn_card() -> ItemBody:
+	var card = card_scene.instantiate()
+	card.cardcom.type = cards.pop_front()
+	get_parent().get_parent().add_child(card)
+	card.transform = body.get_global_transform()
+	return card
+
+
+func show_sprites():
+	@warning_ignore("integer_division")
+	var interval = SIZE_BASE / (card_sprites.size() - 1)
+	var drawn = max(SIZE_BASE - cards.size(), 0)
+	body.debug.display("drawn", drawn)
+	var to_hide: int = int(drawn / interval)
+	body.debug.display("to_hide", to_hide)
+
+	for idx in range(card_sprites.size()): # hide or reveal cards based on drawn #
+		if idx >= card_sprites.size() - to_hide:
+			card_sprites[idx].visible = false
+		else:
+			card_sprites[idx].visible = true
+
+	tether.global_position = card_sprites[(card_sprites.size() - to_hide) - 1].global_position
+

@@ -20,13 +20,42 @@ var hand_pos = null
 signal grabbed_by(item, pointer)
 signal reached_target(item, target_pos)
 
+@onready var debug: DebugLabel = $Debug # Debug print tool 
+
+
 func _ready() -> void:
 	assert(itemcom != null, "No 'itemcom' node assigned as an item component!")
+
+
+func _physics_process(_delta: float) -> void:
+	var target_pos = null
+	if pointer:
+		z_index = POINTER_Z
+		target_pos = pointer.global_position
+	elif tether:
+		z_index = HAND_Z
+		if hand_pos:
+			target_pos = hand_pos
+		else:
+			target_pos = tether.global_position
+	else: 
+		z_index = TABLE_Z
+	
+	_move_item(target_pos)
+	debug.display("target_pos", target_pos)
+	debug.display("velocity", self.velocity)
+
+
+# EXTERNALS #
+
+func init_interact(_pointer: Pointer) -> ItemBody:
+	if cardcom:
+		return interact(_pointer)
+	return null
 
 func interact(_pointer: Pointer) -> ItemBody:
 	if cardcom:
 		itemcom.lift()
-		velocity = vz
 		set_pointer(_pointer)
 		move_to_front()
 		return self
@@ -35,11 +64,18 @@ func interact(_pointer: Pointer) -> ItemBody:
 	return null
 
 func long_interact(_pointer: Pointer) -> ItemBody:
-	if stackcom:
+	if cardcom:
+		var stack = cardcom.try_stacking()
+		if stack:
+			return stack.long_interact(_pointer)
+		else:
+			return interact(_pointer)
+	elif stackcom:
 		itemcom.lift()
+		stackcom.lift()
 		set_pointer(_pointer)
 		move_to_front()
-		return self 
+		return self
 	return null
 		
 func stop_interact() -> ItemBody:
@@ -48,7 +84,7 @@ func stop_interact() -> ItemBody:
 	if cardcom:
 		cardcom.drop()
 	elif stackcom:
-		pass
+		stackcom.drop()
 	return null
 
 func action():
@@ -61,10 +97,16 @@ func action():
 	pass
 
 func flip():
-	if not pointer and not tether:
-		itemcom.jump()
 	if cardcom:
+		if not pointer and not tether:
+			itemcom.jump()
 		cardcom.flip()
+
+func stack_items() -> ItemBody:
+	if cardcom:
+		print("were stacking whoa")
+		return cardcom.try_stacking()
+	return null
 
 func enter_hand(new_hand: Hand) -> ItemBody:
 	if cardcom:
@@ -82,7 +124,7 @@ func to_stack(stack_up: bool):
 			cardcom.flip()
 
 func set_tether(new_tether: Area2D):
-	tether = new_tether 
+	tether = new_tether
 	move_to_front()
 
 func set_hand_pos(new_hand, new_hand_pos):
@@ -101,24 +143,10 @@ func set_pointer(new_pointer: Pointer):
 	if pointer != null:
 		grabbed_by.emit(self, pointer)
 
-func _physics_process(_delta: float) -> void:
-	var target_pos = null
-	if pointer:
-		z_index = POINTER_Z
-		target_pos = pointer.global_position
-	elif tether:
-		z_index = HAND_Z
-		if hand_pos:
-			target_pos = hand_pos
-		else:
-			target_pos = tether.global_position
-	else: 
-		z_index = TABLE_Z
-	
-	move_item(target_pos)
 
+# INTERNALS #
 
-func move_item(target_pos):
+func _move_item(target_pos):
 	if target_pos:
 		velocity = lerp(vz, target_pos - self.global_position, magnetism)
 		move_and_slide()

@@ -11,8 +11,9 @@ var jump_hang = 0
 
 @onready var body := $".."
 @onready var coll := $"../CollisionShape2D"
-@onready var sprite := $"../Animation/CardSprite"
+@onready var anim := $"../Animation"
 @onready var shadow := $"../Animation/Shadow"
+@onready var og_shadow_pos = shadow.position
 
 func _ready() -> void:
 	pass
@@ -57,5 +58,6 @@ func animate_height():
 		if jumping:
 			jumping = false
 
-	sprite.position.y = height_pos
+	anim.position.y = height_pos
 	coll.position.y = height_pos
+	shadow.position.y = -height_pos + og_shadow_pos.y
