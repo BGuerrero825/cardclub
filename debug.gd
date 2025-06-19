@@ -5,6 +5,9 @@ class_name DebugLabel extends Label
 var vardict: Dictionary = {}
 var usedict: Dictionary = {}
 
+func _ready():
+	self.text = ""
+
 func _process(_delta: float) -> void:
 	self.text = ""
 	if !Global.debugging:

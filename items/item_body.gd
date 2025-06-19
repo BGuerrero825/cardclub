@@ -104,7 +104,6 @@ func flip():
 
 func stack_items() -> ItemBody:
 	if cardcom:
-		print("were stacking whoa")
 		return cardcom.try_stacking()
 	return null
 
